@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -17,19 +17,20 @@ EGIT_BRANCH="develop"
 LICENSE="ZLIB"
 SLOT="3"
 if ! [[ ${PV} == 9999* ]]; then
-KEYWORDS="amd64 arm x86 ~amd64-linux ~x86-linux"
-else
-KEYWORDS=""
+KEYWORDS="~amd64 ~arm ~x86 ~amd64-linux ~x86-linux"
 fi
 IUSE="libnotify static-libs test"
 
 RDEPEND=">=dev-libs/glib-2.28
-	>=x11-libs/gtk+-3.2:3
+	>=x11-libs/gtk+-3.4:3
+	dev-libs/json-c
 	!<${CATEGORY}/${PN}-0.1.6
 	libnotify? ( >=x11-libs/libnotify-0.7 )"
 DEPEND="${RDEPEND}
 	sys-devel/gettext
-	virtual/pkgconfig"
+	virtual/pkgconfig
+	test? ( x11-apps/xhost
+		dev-libs/check )"
 
 pkg_setup() {
 	mygiraraconf=(
