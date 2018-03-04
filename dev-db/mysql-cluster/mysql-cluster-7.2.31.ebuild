@@ -1,9 +1,11 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-MY_EXTRAS_VER="20151117-2040Z"
+MY_EXTRAS_VER="20171108-2050Z"
 BUILD="cmake"
+#fails to build with ninja
+CMAKE_MAKEFILE_GENERATOR=emake
 
 inherit toolchain-funcs java-pkg-opt-2 mysql-v2
 # only to make repoman happy. it is really set in the eclass
@@ -14,7 +16,7 @@ KEYWORDS="~amd64 ~x86"
 
 # When MY_EXTRAS is bumped, the index should be revised to exclude these.
 # This is often broken still
-#EPATCH_EXCLUDE=''
+EPATCH_EXCLUDE='20006_all_cmake_elib-mysql-cluster-5.5.37.patch 20008_all_mysql-tzinfo-symlink.patch 20019_all_mysql-5.5-mtr-perl-deprecation.patch 20020_all_mysql-5.6-events_1-bug-78899.patch'
 
 DEPEND="|| ( >=sys-devel/gcc-3.4.6 >=sys-devel/gcc-apple-4.0 )"
 RDEPEND="!media-sound/amarok[embedded]"
