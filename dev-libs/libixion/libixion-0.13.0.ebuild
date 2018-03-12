@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -8,21 +8,21 @@ EGIT_REPO_URI="https://gitlab.com/ixion/ixion.git"
 PYTHON_COMPAT=( python{3_4,3_5,3_6} )
 
 [[ ${PV} == 9999 ]] && GITECLASS="git-r3 autotools"
-inherit eutils python-single-r1 ${GITECLASS}
+inherit python-single-r1 ${GITECLASS}
 unset GITECLASS
 
 DESCRIPTION="General purpose formula parser & interpreter"
 HOMEPAGE="https://gitlab.com/ixion/ixion"
-[[ ${PV} == 9999 ]] || SRC_URI="http://kohei.us/files/ixion/src/${P}.tar.xz"
+[[ ${PV} == 9999 ]] || SRC_URI="https://kohei.us/files/ixion/src/${P}.tar.xz"
 
 LICENSE="MIT"
-SLOT="0/0.11" # based on SONAME of libixion.so
+SLOT="0/0.13" # based on SONAME of libixion.so
 [[ ${PV} == 9999 ]] || \
-KEYWORDS="amd64 ~arm ~ppc x86"
-IUSE="python static-libs"
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~x86"
+IUSE="debug python static-libs +threads"
 
 RDEPEND="
-	dev-libs/boost:=[threads]
+	dev-libs/boost:=
 	python? ( ${PYTHON_DEPS} )
 "
 DEPEND="${RDEPEND}
@@ -36,18 +36,19 @@ pkg_setup() {
 }
 
 src_prepare() {
-	eapply_user
+	default
 	[[ ${PV} == 9999 ]] && eautoreconf
 }
 
 src_configure() {
 	econf \
+		$(use_enable debug) \
 		$(use_enable python) \
-		$(use_enable static-libs static)
+		$(use_enable static-libs static) \
+		$(use_enable threads)
 }
 
 src_install() {
 	default
-
-	prune_libtool_files --all
+	find "${D}" -name '*.la' -delete || die
 }
