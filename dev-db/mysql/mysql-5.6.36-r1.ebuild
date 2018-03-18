@@ -1,22 +1,20 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
 
-MY_EXTRAS_VER="20170719-1335Z"
+MY_EXTRAS_VER="20170302-1359Z"
 MY_PV="${PV//_alpha_pre/-m}"
 MY_PV="${MY_PV//_/-}"
 HAS_TOOLS_PATCH="1"
 SUBSLOT="18"
-#fails to build with ninja
-CMAKE_MAKEFILE_GENERATOR=emake
 
 inherit mysql-multilib-r1
 # only to make repoman happy. it is really set in the eclass
 IUSE="$IUSE"
 
 # REMEMBER: also update eclass/mysql*.eclass before committing!
-KEYWORDS="~alpha amd64 arm ~hppa ia64 ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~sparc-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
 
 DEPEND="|| ( >=sys-devel/gcc-3.4.6 >=sys-devel/gcc-apple-4.0 )"
 RDEPEND="${RDEPEND}"
@@ -28,7 +26,7 @@ PATCHES=(
 	"${MY_PATCH_DIR}"/02040_all_embedded-library-shared-5.5.10.patch
 	"${MY_PATCH_DIR}"/20006_all_cmake_elib-mysql-5.6.35.patch
 	"${MY_PATCH_DIR}"/20007_all_cmake-debug-werror-5.6.22.patch
-	"${MY_PATCH_DIR}"/20008_all_mysql-tzinfo-symlink-5.6.37.patch
+	"${MY_PATCH_DIR}"/20008_all_mysql-tzinfo-symlink.patch
 	"${MY_PATCH_DIR}"/20009_all_mysql_myodbc_symbol_fix-5.6.patch
 	"${MY_PATCH_DIR}"/20018_all_mysql-5.6.25-without-clientlibs-tools.patch
 )
@@ -145,10 +143,6 @@ multilib_src_test() {
 				mysql-multilib-r1_disable_test  "$t" "Test $t requires USE=extraengine (Need federated engine)"
 			done
 		fi
-
-		for t in main.mysql main.mysql_upgrade ; do
-			mysql-multilib-r1_disable_test  "$t" "Test $t broken upstream - error return value not updated"
-		done
 
 		# Run mysql tests
 		pushd "${TESTDIR}"
