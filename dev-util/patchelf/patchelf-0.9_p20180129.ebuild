@@ -1,13 +1,14 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools
+inherit autotools vcs-snapshot
 
 DESCRIPTION="Small utility to modify the dynamic linker and RPATH of ELF executables"
 HOMEPAGE="http://nixos.org/patchelf.html"
-SRC_URI="http://releases.nixos.org/${PN}/${P}/${P}.tar.bz2"
+COMMIT=1fa4d36fead44333528cbee4b5c04c207ce77ca4
+SRC_URI="https://github.com/NixOS/${PN^}/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux"
 LICENSE="GPL-3"
