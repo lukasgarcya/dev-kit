@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,7 +15,7 @@ KEYWORDS="amd64 ~ppc64 x86"
 IUSE="debug doc test"
 
 COMMON_DEPEND="
-	app-crypt/qca:2[debug?,qt5]
+	app-crypt/qca:2[debug?,qt5(+)]
 	dev-qt/qtnetwork:5
 "
 DEPEND="${COMMON_DEPEND}
@@ -29,7 +29,10 @@ RDEPEND="${COMMON_DEPEND}
 
 # disable functional tests that require network connection
 # and rely on 3rd party external server (bug #341267)
-PATCHES=( "${FILESDIR}/${PN}-1.0.1-disable-ft.patch" )
+PATCHES=(
+	"${FILESDIR}/${PN}-1.0.1-disable-ft.patch"
+	"${FILESDIR}/${P}-prf.patch"
+)
 
 src_prepare() {
 	default
